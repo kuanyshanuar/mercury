@@ -1,0 +1,287 @@
+image: golang:latest
+
+variables:
+  CONTAINER_URI: $CI_REGISTRY_IMAGE
+  LEAD_WORKER_CONTAINER_URI: $CI_REGISTRY_IMAGE/lead-worker
+  CONTACTS_WORKER_CONTAINER_URI: $CI_REGISTRY_IMAGE/contacts-worker
+  DATA_MIGRATION_BASE_IMAGE: registry.gitlab.com/shtabkvartir/postgresql.data-migration:latest
+
+stages:
+  - code-quality
+  - build
+  - migration
+  - run-migration
+  - cleanup
+  - deploy
+  - release
+  - increment-version
+
+lint:
+  stage: code-quality
+  before_script:
+    - go install golang.org/x/lint/golint@latest
+  script:
+    - ./scripts/golint.sh
+  allow_failure: false
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+vet:
+  stage: code-quality
+  script: go vet ./...
+  allow_failure: false
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+staticcheck:
+  stage: code-quality
+  before_script:
+    - go install honnef.co/go/tools/cmd/staticcheck@latest
+  script: staticcheck ./...
+  allow_failure: false
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+check_fmt:
+  stage: code-quality
+  script: ./scripts/check_fmt.sh
+  allow_failure: false
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+build:
+  stage: build
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker build --no-cache -t $CONTAINER_URI:latest -t $CONTAINER_URI:$CI_COMMIT_SHA --build-arg="APP_VERSION=0.1.0" -f deploy/mercury/Dockerfile .
+    - docker push $CONTAINER_URI:latest
+    - docker push $CONTAINER_URI:$CI_COMMIT_SHA
+    - docker logout
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+build-lead-worker:
+  stage: build
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker build --no-cache -t $LEAD_WORKER_CONTAINER_URI:latest -t $LEAD_WORKER_CONTAINER_URI:$CI_COMMIT_SHA --build-arg="APP_VERSION=0.1.0" -f deploy/leadsworker/Dockerfile .
+    - docker push $LEAD_WORKER_CONTAINER_URI:latest
+    - docker push $LEAD_WORKER_CONTAINER_URI:$CI_COMMIT_SHA
+    - docker logout
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+build-contacts-worker:
+  stage: build
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker build --no-cache -t $CONTACTS_WORKER_CONTAINER_URI:latest -t $CONTACTS_WORKER_CONTAINER_URI:$CI_COMMIT_SHA --build-arg="APP_VERSION=0.1.0" -f deploy/contactsworker/Dockerfile .
+    - docker push $CONTACTS_WORKER_CONTAINER_URI:latest
+    - docker push $CONTACTS_WORKER_CONTAINER_URI:$CI_COMMIT_SHA
+    - docker logout
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+migration:
+  stage: migration
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - cd migrations
+    - docker build --no-cache -t registry.gitlab.com/shtabkvartir/mercury/mercury-data-migration:latest -t registry.gitlab.com/shtabkvartir/mercury/mercury-data-migration:$CI_COMMIT_SHA --build-arg="BASE_IMAGE=${DATA_MIGRATION_BASE_IMAGE}" .
+    - docker push registry.gitlab.com/shtabkvartir/mercury/mercury-data-migration:latest
+    - docker push registry.gitlab.com/shtabkvartir/mercury/mercury-data-migration:$CI_COMMIT_SHA
+    - docker logout
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+.run-migration:
+  image: docker:latest
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker run --rm --network="host" -e "DSN=${DSN}" -t registry.gitlab.com/shtabkvartir/mercury/mercury-data-migration:$CI_COMMIT_SHA
+    - docker logout
+
+run-migration-staging:
+  stage: run-migration
+  extends: .run-migration
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+run-migration-production:
+  stage: run-migration
+  extends: .run-migration
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+  when: manual
+
+cleanup-staging:
+  stage: cleanup
+  image: docker:latest
+  script:
+    - docker system prune -f
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+.deploy:
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker pull $CONTAINER_URI:$CI_COMMIT_SHA
+    - cp $ENV_FILE .env
+    - docker rm -f api
+    - docker run -d  --restart=always --net=mercury --name api -p 8000:8000 --env-file .env $CONTAINER_URI:$CI_COMMIT_SHA
+    - docker logout
+
+deploy-staging:
+  stage: deploy
+  extends: .deploy
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+deploy-production:
+  stage: deploy
+  needs: ["run-migration-production"]
+  extends: .deploy
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+  when: manual
+
+.deploy-lead-worker:
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker pull $LEAD_WORKER_CONTAINER_URI:$CI_COMMIT_SHA
+    - cp $ENV_FILE .env
+    - docker rm -f leads-worker
+    - docker run -d --restart=always --net=mercury --name leads-worker --env-file .env $LEAD_WORKER_CONTAINER_URI:$CI_COMMIT_SHA
+    - docker logout
+
+deploy-lead-worker-staging:
+  stage: deploy
+  extends: .deploy-lead-worker
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+deploy-lead-worker-production:
+  stage: deploy
+  extends: .deploy-lead-worker
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+  when: manual
+
+.deploy-contacts-worker:
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker pull $CONTACTS_WORKER_CONTAINER_URI:$CI_COMMIT_SHA
+    - cp $ENV_FILE .env
+    - docker rm -f contacts-worker
+    - docker run -d --restart=always --net=mercury --name contacts-worker --env-file .env $CONTACTS_WORKER_CONTAINER_URI:$CI_COMMIT_SHA
+    - docker logout
+
+deploy-contacts-worker-staging:
+  stage: deploy
+  extends: .deploy-contacts-worker
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging
+
+deploy-contacts-worker-production:
+  stage: deploy
+  extends: .deploy-contacts-worker
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+  when: manual
+
+release:
+  stage: release
+  before_script:
+    - MAJOR_MINOR_PATCH=$(bash version.sh print_major_minor_patch)
+  script:
+    - MAJOR_MINOR_PATCH=$(bash version.sh print_major_minor_patch)
+    - echo ${MAJOR_MINOR_PATCH}
+    - echo $CONTAINER_URI
+    - echo $WORKER_CONTAINER_URI
+    - echo $CI_COMMIT_REF_SLUG
+    - echo $CI_COMMIT_SHA
+  tags:
+    - staging-runner
+  only:
+    - main
+  environment: staging

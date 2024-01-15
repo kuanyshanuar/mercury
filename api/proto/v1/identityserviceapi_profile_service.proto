@@ -1,0 +1,53 @@
+syntax = "proto3";
+package gitlab.com.mercury.identityservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/identityserviceapi/v1";
+
+import "identityserviceapi_profile_model.proto";
+
+/**
+* The profile service.
+*/
+service ProfileService {
+
+     /**
+     * Returns a user's profile.
+     * If the user exists, an error "Already exists" will be returned.
+     */
+     rpc GetProfile(GetProfileRequest) returns (GetProfileResponse) {}
+
+     /**
+     * Updates user's profile.
+     * If the user exists, an error "Already exists" will be returned.
+     */
+     rpc UpdateProfile(UpdateProfileRequest) returns (UpdateProfileResponse) {}
+
+     /**
+     * Validates phone changes
+     * If the phone exists, an error "Already exists" will be returned.
+     */
+     rpc ValidatePhone(ValidatePhoneRequest) returns (ValidatePhoneResponse) {}
+}
+
+message GetProfileRequest {
+     int64 user_id = 1;
+}
+
+message GetProfileResponse {
+     ProfileRead profile = 1;
+}
+
+message UpdateProfileRequest {
+     int64 user_id = 1;
+     ProfileWrite profile = 2;
+}
+
+message UpdateProfileResponse {
+     ProfileRead profile = 1;
+}
+
+message ValidatePhoneRequest {
+     string code = 1;
+}
+
+message ValidatePhoneResponse {
+}

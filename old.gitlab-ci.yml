@@ -1,0 +1,290 @@
+image: golang:latest
+
+variables:
+  CONTAINER_URI: $CI_REGISTRY_IMAGE
+  WORKER_CONTAINER_URI: $CI_REGISTRY_IMAGE/worker
+  DATA_MIGRATION_BASE_IMAGE: registry.gitlab.com/shtabkvartir/postgresql.data-migration:latest
+
+stages:
+  - code-quality
+  - build
+  - migration
+  - run-migration
+  - cleanup
+  - deploy
+  - release
+  - increment-version
+
+lint:
+  stage: code-quality
+  before_script:
+    - go install golang.org/x/lint/golint@latest
+  script:
+    - ./scripts/golint.sh
+  allow_failure: false
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+vet:
+  stage: code-quality
+  script: go vet ./...
+  allow_failure: false
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+staticcheck:
+  stage: code-quality
+  before_script:
+    - go install honnef.co/go/tools/cmd/staticcheck@latest
+  script: staticcheck ./...
+  allow_failure: false
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+check_fmt:
+  stage: code-quality
+  script: ./scripts/check_fmt.sh
+  allow_failure: false
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+.build:
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker rmi --force $CONTAINER_URI:latest
+    - docker build --no-cache -t $CONTAINER_URI:latest --build-arg="APP_VERSION=0.1.0" -f deploy/mercury/Dockerfile .
+    - docker push $CONTAINER_URI:latest
+    - docker logout
+
+.build-worker:
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker rmi --force $WORKER_CONTAINER_URI:latest
+    - docker build --no-cache -t $WORKER_CONTAINER_URI:latest --build-arg="APP_VERSION=0.1.0" -f deploy/worker/Dockerfile .
+    - docker push $WORKER_CONTAINER_URI:latest
+    - docker logout
+
+build-staging:
+  stage: build
+  extends: .build
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+build-production:
+  stage: build
+  extends: .build
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+
+build-worker-staging:
+  stage: build
+  extends: .build-worker
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+build-worker-production:
+  stage: build
+  extends: .build-worker
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+
+.migration:
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - cd migrations
+    - docker build --no-cache -t registry.gitlab.com/shtabkvartir/mercury/mercury-data-migration:latest --build-arg="BASE_IMAGE=${DATA_MIGRATION_BASE_IMAGE}" .
+    - docker push registry.gitlab.com/shtabkvartir/mercury/mercury-data-migration:latest
+    - docker logout
+
+migration-staging:
+  stage: migration
+  extends: .migration
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+migration-production:
+  stage: migration
+  extends: .migration
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+
+.run-migration:
+  image: docker:latest
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - docker run --rm --network="host" -e "DSN=${DSN}" -t registry.gitlab.com/shtabkvartir/mercury/mercury-data-migration:latest
+    - docker logout
+
+run-migration-staging:
+  stage: run-migration
+  extends: .run-migration
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+run-migration-production:
+  stage: run-migration
+  extends: .run-migration
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+
+.cleanup:
+  image: docker:latest
+  script:
+    - docker system prune -f
+
+cleanup-staging:
+  stage: cleanup
+  extends: .cleanup
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+cleanup-production:
+  stage: cleanup
+  extends: .cleanup
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+
+.deploy:
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - cp $ENV_FILE .env
+    - docker rm -f api
+    - docker pull $CONTAINER_URI:latest
+    - docker run -d --net=mercury --name api -p 8000:8000 --env-file .env $CONTAINER_URI:latest
+    - docker logout
+
+.deploy-worker:
+  image: docker:dind
+  services:
+    - docker:dind
+  before_script:
+    - echo -n $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  script:
+    - cp $ENV_FILE .env
+    - docker rm -f worker-production
+    - docker pull $WORKER_CONTAINER_URI:latest
+    - docker run -d --net=mercury --name worker-production --env-file .env $WORKER_CONTAINER_URI:latest
+    - docker logout
+
+deploy-staging:
+  stage: deploy
+  extends: .deploy
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+deploy-worker-staging:
+  stage: deploy
+  extends: .deploy-worker
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+deploy-production:
+  stage: deploy
+  extends: .deploy
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+
+deploy-worker-production:
+  stage: deploy
+  extends: .deploy-worker
+  tags:
+    - production-runner
+  only:
+    - main
+  environment: production
+
+release:
+  stage: release
+  before_script:
+    - MAJOR_MINOR_PATCH=$(bash version.sh print_major_minor_patch)
+  script:
+    - MAJOR_MINOR_PATCH=$(bash version.sh print_major_minor_patch)
+    - echo ${MAJOR_MINOR_PATCH}
+    - echo $CONTAINER_URI
+    - echo $WORKER_CONTAINER_URI
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging
+
+increment-version:
+  stage: increment-version
+  before_script:
+    - MAJOR_MINOR_PATCH=$(bash version.sh print_major_minor_patch)
+  script:
+    - MAJOR_MINOR_PATCH=$(bash version.sh print_major_minor_patch)
+    - echo ${MAJOR_MINOR_PATCH}
+  tags:
+    - staging-runner
+  only:
+    - staging
+  environment: staging

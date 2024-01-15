@@ -1,0 +1,22 @@
+syntax = "proto3";
+package gitlab.com.mercury.identityservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/identityserviceapi/v1";
+
+/**
+* The Code Service.
+*/
+service CodeService {
+
+  /**
+  * Sends sms code to user phone.
+  *
+  */
+  rpc SendCode(SendCodeRequest) returns (SendCodeResponse) {}
+}
+
+message SendCodeRequest {
+  string phone = 1;
+}
+
+message SendCodeResponse {
+}

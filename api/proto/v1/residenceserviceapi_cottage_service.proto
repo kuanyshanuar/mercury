@@ -1,0 +1,99 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+import "residenceserviceapi_cottage_model.proto";
+
+service CottageService{
+  rpc CreateCottage(CreateCottageRequest) returns (CreateCottageResponse);
+  rpc UpdateCottage(UpdateCottageRequest) returns (UpdateCottageResponse);
+  rpc DeleteCottage(DeleteCottageRequest) returns(DeleteCottageResponse);
+  rpc GetCottage(GetCottageRequest) returns (GetCottageResponse);
+  rpc ListCottages(ListCottagesRequest) returns(ListCottagesResponse);
+  rpc ListCottageByID(ListCottageByIDRequest) returns(ListCottageByIDResponse);
+  rpc ListPopularCottages(ListPopularCottagesRequest) returns(ListPopularCottagesResponse);
+  rpc CreateCottagePlan(CreateCottagePlanRequest) returns(CreateCottagePlanResponse);
+  rpc UpdateCottagePlan(UpdateCottagePlanRequest) returns(UpdateCottagePlanResponse);
+  rpc DeleteCottagePlan(DeleteCottagePlanRequest) returns(DeleteCottagePlanResponse);
+}
+
+message CreateCottageRequest{
+  CottageWrite cottage = 1;
+}
+
+message CreateCottageResponse{
+    CottageRead cottage = 1;
+}
+
+message UpdateCottageRequest{
+    int64 id = 1;
+    CottageWrite cottage = 2;
+}
+
+message UpdateCottageResponse{
+    CottageRead cottage = 1;
+}
+
+message DeleteCottageRequest{
+  int64 id = 1;
+}
+
+message DeleteCottageResponse{
+}
+
+message GetCottageRequest{
+  int64 ID = 1;
+}
+
+message GetCottageResponse{
+  CottageRead cottage = 1;
+}
+
+message ListCottagesRequest{
+  CottageSearchCriteria criteria = 1;
+}
+
+message ListCottagesResponse{
+  repeated CottageRead cottage = 1;
+  int64 total_count = 2;
+}
+
+message ListCottageByIDRequest{
+  repeated int64 ids = 1;
+}
+
+message ListCottageByIDResponse{
+  repeated CottageRead cottage = 1;
+}
+
+message ListPopularCottagesRequest{
+  CottageSearchCriteria criteria = 1;
+}
+
+message ListPopularCottagesResponse{
+  repeated CottageRead cottage = 1;
+  int64 total_count = 2;
+}
+
+message CreateCottagePlanRequest{
+  HousePlanWrite plan = 1;
+}
+
+message CreateCottagePlanResponse{
+  HousePlanRead plan = 1;
+}
+
+message UpdateCottagePlanRequest{
+  int64 plan_id = 1;
+  HousePlanWrite plan = 2;
+}
+
+message UpdateCottagePlanResponse{
+  HousePlanRead plan = 1;
+}
+
+message DeleteCottagePlanRequest{
+  int64 plan = 1;
+}
+
+message DeleteCottagePlanResponse{
+}

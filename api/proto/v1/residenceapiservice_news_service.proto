@@ -1,0 +1,129 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceapiservice_news_model.proto";
+
+service NewsService{
+
+  /**
+  * Creates new news.
+  */
+  rpc Create(CreateNewsRequest) returns (CreateNewsResponse) {};
+
+  /**
+  * Returns news by the provided id.
+  * If the news does not exist, an error "Not found" will be returned.
+  */
+  rpc Get(GetNewsRequest) returns (GetNewsResponse) {};
+
+  /**
+   * Deletes an existing news.
+   * If the news does not exist, an error "Not found" will be returned.
+   */
+  rpc Delete(DeleteNewsRequest) returns (DeleteNewsResponse) {};
+
+  /**
+  * Updates an existing news.
+  * If the news does not exist, an error "Not found" will be returned.
+  */
+  rpc Update(UpdateNewsRequest) returns (UpdateNewsResponse) {};
+
+  /**
+  * Returns news.
+  * If the news does not exist, an error "Not found" will be returned.
+  */
+  rpc List(ListNewsRequest) returns (ListNewsResponse) {};
+
+  /**
+  * Adds like.
+  * If the article does not exist, an error "Not found" will be returned.
+  */
+  rpc Like(LikeRequest) returns(LikeResponse) {};
+
+  /**
+  * Removes like.
+  * If the article does not exist, an error "Not found" will be returned.
+  */
+  rpc DeleteLike(DeleteLikeRequest) returns (DeleteLikeResponse) {};
+
+  /**
+  * Adds dislike.
+  * If the article does not exist, an error "Not found" will be returned.
+  */
+  rpc Dislike(DislikeRequest) returns(DislikeResponse) {};
+
+  /**
+  * Removes dislike.
+  * If the article does not exist, an error "Not found" will be returned.
+  */
+  rpc DeleteDislike(DeleteDislikeRequest) returns (DeleteDislikeResponse) {};
+}
+
+message GetNewsRequest{
+  int64 id =1;
+}
+message GetNewsResponse{
+  Article article =1;
+}
+
+message CreateNewsRequest{
+  Article article =1;
+}
+
+message CreateNewsResponse{
+  int64 id =1;
+}
+
+message DeleteNewsRequest{
+  int64 id = 1;
+}
+
+message DeleteNewsResponse{
+}
+
+message UpdateNewsRequest{
+  int64 id = 1;
+  Article article = 2;
+}
+
+message UpdateNewsResponse{
+}
+
+message ListNewsRequest{
+  NewsSearchCriteria criteria = 1;
+}
+
+message ListNewsResponse{
+  repeated Article articles = 1;
+  int64 total_count = 2;
+}
+
+message LikeRequest{
+  int64 article_id = 1;
+}
+message LikeResponse{
+}
+
+message DeleteLikeRequest {
+  int64 article_id = 1;
+}
+
+message DeleteLikeResponse {
+}
+
+message DislikeRequest{
+  int64 article_id = 1;
+}
+message DislikeResponse{
+}
+
+message DeleteDislikeRequest{
+  int64 article_id = 1;
+}
+
+message DeleteDislikeResponse {
+}
+
+
+

@@ -1,0 +1,36 @@
+syntax = "proto3";
+package gitlab.com.mercury.identityservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/identityserviceapi/v1";
+
+/**
+* The permission service.
+*/
+service PermissionService {
+  /**
+   * Returns a list of permission.
+   */
+  rpc List(ListPermissionsRequest) returns (ListPermissionsResponse);
+
+  /**
+  * Allows user.
+  */
+  rpc Allow(AllowPermissionRequest) returns (AllowPermissionResponse);
+}
+
+message ListPermissionsRequest {
+
+}
+
+message ListPermissionsResponse{
+
+}
+
+message AllowPermissionRequest {
+  string permission_key = 1;
+  int64 user_id = 2;
+  int64 role_id = 3;
+}
+
+message AllowPermissionResponse {
+  bool is_allowed = 1;
+}

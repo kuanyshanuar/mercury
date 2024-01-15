@@ -1,0 +1,231 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+/**
+ * Page request.
+*/
+message PageRequest {
+    int32 offset = 1; // page offset
+    int32 size = 2; // page size
+}
+
+/**
+ * Structure for sorting and ordering.
+*/
+message Sort {
+    string field_name = 1; // the name of the field to sort
+    bool asc = 2; // true - "asc"  or false - "desc"
+}
+
+/**
+ * Represents the residence city model.
+*/
+message City {
+    // ID
+    //
+    int64 id = 1;
+
+    // Name
+    //
+    string name = 2;
+}
+
+/**
+ * Represents the lead status.
+*/
+message LeadStatus {
+
+    // ID - id
+    //
+    int64 id = 1;
+
+    // Name - name
+    //
+    string name = 2;
+}
+
+/*
+    WarmingTypeWrite Represents warming types for the cottages and residences
+ */
+message WarmingTypeWrite{
+    string name = 1;
+}
+
+message WarmingTypeRead{
+    int64 id = 1;
+    string name = 2;
+}
+
+/*
+    InteriorDecorationWrite - interior decorations struct for the cottages and residences
+*/
+message InteriorDecorationWrite{
+    string name = 1;
+}
+
+message InteriorDecorationRead{
+    int64 id = 1;
+    string name = 2;
+}
+/*
+    HeatingTypeWrite - interior decorations struct for the cottages and residences
+*/
+message HeatingTypeWrite{
+    string name = 1;
+}
+
+message HeatingTypeRead{
+    int64 id = 1;
+    string name = 2;
+}
+
+/*
+     PurchaseMethodsWrite - common purchase method model for cottages and residences
+ */
+message PurchaseMethodWrite{
+    string name = 1;
+}
+message PurchaseMethodRead{
+    int64 id = 1;
+    string name = 2;
+}
+
+/*
+     PurchaseMethodsWrite - common purchase method model for cottages and residences
+ */
+message WindowTypeWrite{
+    string name = 1;
+}
+
+message WindowTypeRead{
+    int64 id = 1;
+    string name = 2;
+}
+
+message WallTypeWrite{
+    string name = 1;
+}
+
+message WallTypeRead{
+    int64 id = 1;
+    string name = 2;
+}
+
+message ElevatorTypeWrite{
+    string name = 1;
+}
+
+message ElevatorTypeRead{
+    int64 id = 1;
+    string name = 2;
+}
+
+message StatusRead{
+    int64 id = 1;
+    string name = 2;
+}
+
+message StatusWrite{
+    int64 id = 1;
+}
+
+message SaleStatusRead{
+    int64 id = 1;
+    string name = 2;
+}
+
+message SaleStatusWrite{
+    int64 id = 1;
+}
+
+message HouseClassWrite{
+    string name = 1;
+}
+
+message HouseClassRead{
+    int64 id = 1;
+    string name = 2;
+}
+
+
+
+/**
+ * Represents the district type write model.
+*/
+message DistrictWrite{
+    // Name - name of the district
+    //
+    string name = 1;
+    // City
+    //
+    int64 city_id = 2;
+}
+
+message DistrictRead{
+    // ID of the district
+    //
+    int64 id = 1;
+    // name of the district
+    //
+    string name = 2;
+    // City id
+    //
+    int64 city_id = 3;
+
+    // City
+    //
+    City city = 4;
+
+
+}
+
+/**
+ * Represents the construction type write model.
+*/
+message ConstructionTypeWrite {
+
+    // Name
+    //
+    string name = 1;
+}
+
+/**
+ * Represents the construction type read model.
+*/
+message ConstructionTypeRead {
+
+    // ID
+    //
+    int64 id = 1;
+
+    // Name
+    //
+    string name = 2;
+}
+
+
+
+/**
+ * Represents the parking type write model.
+*/
+message ParkingTypeWrite {
+
+    // Name
+    //
+    string name = 1;
+}
+
+/**
+ * Represents the parking type read model.
+*/
+message ParkingTypeRead {
+
+    // ID
+    //
+    int64 id = 1;
+
+    // Name
+    //
+    string name = 2;
+}

@@ -1,0 +1,68 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceserviceapi_user_residence_model.proto";
+
+/**
+* The User Residence service.
+*/
+service UserResidenceService {
+
+  /**
+   * Adds a residence to favourite list.
+   *
+   * If the residence not exists, an error "residence does not exists" will be returned.
+   */
+  rpc AddResidenceToFavourites(AddResidenceToFavouritesRequest) returns (AddResidenceToFavouritesResponse) {}
+
+  /**
+   * Deletes a residence from favourite list.
+   *
+   * If the residence not exists, an error "residence does not exists" will be returned.
+   */
+  rpc DeleteResidenceFromFavourites(DeleteResidenceFromFavouritesRequest) returns (DeleteResidenceFromFavouritesResponse) {}
+
+  /**
+   * Returns a list of residences from favourite list.
+   */
+  rpc ListFavouriteResidences(ListFavouriteResidencesRequest) returns (ListFavouriteResidencesResponse) {}
+
+}
+
+message AddResidenceToFavouritesRequest {
+  // ID - id of user
+  //
+  int64 user_id = 1;
+
+  // ID - id of residence
+  //
+  int64 residence_id = 2;
+}
+
+message AddResidenceToFavouritesResponse {
+}
+
+message DeleteResidenceFromFavouritesRequest {
+  // ID - id of user
+  //
+  int64 user_id = 1;
+
+  // ID - id of residence
+  //
+  int64 residence_id = 2;
+}
+
+message DeleteResidenceFromFavouritesResponse {
+
+}
+
+message ListFavouriteResidencesRequest {
+  int64 user_id = 1;
+  FavouriteResidencesSearchCriteria criteria = 2;
+}
+
+message ListFavouriteResidencesResponse {
+  repeated int64 residence_ids = 1;
+  int64 total = 2;
+}

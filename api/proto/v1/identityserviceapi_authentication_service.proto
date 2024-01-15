@@ -1,0 +1,82 @@
+syntax = "proto3";
+package gitlab.com.mercury.identityservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/identityserviceapi/v1";
+
+import "identityserviceapi_authentication_model.proto";
+
+/**
+* The authentication service.
+*/
+service AuthenticationService {
+
+  /**
+  * Creates a new user.
+  * If the user exists, an error "Already exists" will be returned.
+  */
+  rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {}
+
+  /**
+  * Login the user with email and password.
+  * If the user does not exist, an error "Not found" will be returned.
+  */
+  rpc Login(LoginRequest) returns (LoginResponse) {}
+
+  /**
+  * Validates a sms code.
+  * If the code does not exist, an error "Not found" will be returned.
+  */
+  rpc ValidateCode(ValidateCodeRequest) returns (ValidateCodeResponse) {}
+
+  /**
+  * Send reset password token.
+  * If the code does not exist, an error "Not found" will be returned.
+  */
+  rpc SendResetPasswordToken(SendResetPasswordTokenRequest) returns (SendResetPasswordTokenResponse) {}
+
+  /**
+  * Reset password token.
+  * If the code does not exist, an error "Not found" will be returned.
+  */
+  rpc ResetPasswordToken(ResetPasswordTokenRequest) returns (ResetPasswordTokenResponse) {}
+}
+
+message CreateUserRequest {
+  UserWrite user = 1;
+}
+
+message CreateUserResponse {
+  UserRead user = 1;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  UserRead user = 1;
+}
+
+message ValidateCodeRequest {
+  string code = 1;
+}
+
+message ValidateCodeResponse {
+  int64 user_id = 1;
+  int64 role_id = 2;
+}
+
+message SendResetPasswordTokenRequest {
+  string email = 1;
+}
+
+message SendResetPasswordTokenResponse {
+}
+
+message ResetPasswordTokenRequest {
+  string token = 1;
+  string new_password = 2;
+}
+
+message ResetPasswordTokenResponse {
+}

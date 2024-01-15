@@ -1,0 +1,2 @@
+ALTER TABLE residences DROP COLUMN IF EXISTS district;
+ALTER TABLE residences ADD COLUMN IF NOT EXISTS district_id BIGINT REFERENCES districts(id);

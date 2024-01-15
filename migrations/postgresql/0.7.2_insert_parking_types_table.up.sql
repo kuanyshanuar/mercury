@@ -1,0 +1,1 @@
+INSERT INTO parking_types (name) VALUES ('Крытый');

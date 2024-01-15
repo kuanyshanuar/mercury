@@ -1,0 +1,150 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceserviceapi_residence_model.proto";
+
+/**
+* The Residence service.
+*/
+service ResidenceService {
+
+    /**
+    * Creates a new residence.
+    * If the residence exists, an error "Already exists" will be returned.
+    */
+    rpc CreateResidence(CreateResidenceRequest) returns (CreateResidenceResponse) {}
+
+    /**
+     * Returns a list residence by criteria.
+     * If the residence does not exist, an error "Not found" will be returned.
+     */
+    rpc ListResidences(ListResidencesRequest) returns (ListResidencesResponse) {}
+
+    /**
+     * Returns a residence by the provided id.
+     * If the residence does not exist, an error "Not found" will be returned.
+     */
+    rpc GetResidence(GetResidenceRequest) returns (GetResidenceResponse) {}
+
+    /**
+    * Updates an existing residence by the provided id.
+    * If the residence does not exist, an error "Not found" will be returned.
+    */
+    rpc UpdateResidence(UpdateResidenceRequest) returns (UpdateResidenceResponse) {}
+
+    /**
+    * Deletes an existing residence.
+    * If the residence does not exist, an error "Not found" will be returned.
+    */
+    rpc DeleteResidence(DeleteResidenceRequest) returns (DeleteResidenceResponse) {}
+
+    /**
+     * Returns a list of residences by ids.
+     */
+    rpc ListResidencesByIDs(ListResidencesByIDsRequest) returns (ListResidencesByIDsResponse) {}
+
+    /**
+    * Returns a list residence by criteria.
+    * If the residence does not exist, an error "Not found" will be returned.
+    */
+    rpc ListPopularResidences(ListPopularResidencesRequest) returns (ListPopularResidencesResponse) {}
+
+    /**
+    * Creates a new flat plan.
+    */
+    rpc CreateFlatPlan(CreateFlatPlanRequest) returns (CreateFlatPlanResponse) {}
+
+    /**
+    * Updates a flat plan.
+    */
+    rpc UpdateFlatPlan(UpdateFlatPlanRequest) returns (UpdateFlatPlanResponse) {}
+
+    /**
+    * Deletes a flat plan.
+    */
+    rpc DeleteFlatPlan(DeleteFlatPlanRequest) returns (DeleteFlatPlanResponse) {}
+
+}
+
+message CreateResidenceRequest {
+    ResidenceWrite residence = 1;
+}
+
+message CreateResidenceResponse {
+    ResidenceRead residence = 1;
+}
+
+message ListResidencesRequest {
+    ResidencesSearchCriteria criteria = 1;
+}
+
+message ListResidencesResponse {
+    repeated ResidenceRead residences = 1;
+    int64 total = 2;
+}
+
+message GetResidenceRequest {
+    int64 id = 1;
+}
+
+message GetResidenceResponse {
+    ResidenceRead residence = 1;
+}
+
+message UpdateResidenceRequest {
+    int64 id = 1;
+    ResidenceWrite residence = 2;
+}
+
+message UpdateResidenceResponse {
+    ResidenceRead residence = 1;
+}
+
+message DeleteResidenceRequest {
+    int64 id = 1;
+}
+
+message DeleteResidenceResponse {
+}
+
+message ListResidencesByIDsRequest {
+  repeated int64 residence_ids = 1;
+}
+
+message ListResidencesByIDsResponse {
+    repeated ResidenceRead residences = 2;
+}
+
+message ListPopularResidencesRequest {
+    ResidencesSearchCriteria criteria = 1;
+}
+
+message ListPopularResidencesResponse {
+    repeated ResidenceRead residences = 1;
+    int64 total = 2;
+}
+
+message CreateFlatPlanRequest {
+    ResidenceFlatPlanWrite flat_plan = 1;
+}
+
+message CreateFlatPlanResponse {
+    ResidenceFlatPlanRead flat_plan = 1;
+}
+
+message UpdateFlatPlanRequest {
+    int64 id = 1;
+    ResidenceFlatPlanWrite flat_plan = 2;
+}
+
+message UpdateFlatPlanResponse {
+    ResidenceFlatPlanRead flat_plan = 1;
+}
+
+message DeleteFlatPlanRequest {
+    int64 id = 1;
+}
+
+message DeleteFlatPlanResponse {
+}

@@ -1,0 +1,64 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceserviceapi_contact_details_model.proto";
+
+/**
+* The Contact Details service.
+*/
+service ContactDetailsService {
+
+    /**
+    * Returns a list cities.
+    */
+
+    rpc CreateContactDetails(CreateContactDetailsRequest) returns (CreateContactDetailsResponse) {}
+
+    /**
+    * Returns a list cities.
+    */
+
+    rpc CreateResidenceContactDetails(CreateResidenceContactDetailsRequest) returns (CreateResidenceContactDetailsResponse) {}
+
+    /**
+    * Returns a list cities.
+    */
+    rpc ListContactDetails(ListContactDetailsRequest) returns (ListContactDetailsResponse) {}
+
+    /**
+    * Returns a list district by city id.
+    *
+    * If the city does not exist, an error "Not found" will be returned.
+    */
+    rpc ListResidenceContactDetails(ListResidenceContactDetailsRequest) returns (ListResidenceContactDetailsResponse) {}
+}
+
+message CreateContactDetailsRequest {
+    ContactDetailsWrite contact_details = 1;
+}
+
+message CreateContactDetailsResponse {
+}
+
+message CreateResidenceContactDetailsRequest {
+    ResidenceContactDetailsWrite contact_details = 1;
+}
+
+message CreateResidenceContactDetailsResponse {
+}
+
+message ListContactDetailsRequest {
+}
+
+message ListContactDetailsResponse {
+    repeated ContactDetailsRead contact_details = 1;
+}
+
+message ListResidenceContactDetailsRequest {
+
+}
+
+message ListResidenceContactDetailsResponse {
+    repeated ResidenceContactDetailsRead contact_details = 1;
+}

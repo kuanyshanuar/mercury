@@ -1,0 +1,1 @@
+ALTER TABLE leads_statuses RENAME TO lead_statuses;

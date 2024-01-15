@@ -1,0 +1,91 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "common_model.proto";
+
+message Article {
+
+  // ID - id of the article
+  //
+  int64 ID = 1;
+
+  // Title is a title of the article
+  //
+  string title= 2;
+
+  // ShortDescription is a short description at the beginning
+  //
+  string short_description = 3;
+
+  // Slug is a slug of the article on the URL
+  //
+  string slug = 4;
+
+  // Content is a content of the article
+  //
+  string content = 5;
+
+  // ViewsCount is value of the viewers
+  //
+  int64 views_count = 12;
+
+  // SourceUrl is for the case when the article was taken from other website
+  //
+  string source_url = 13;
+
+  // AuthorName is the name of the article's author
+  //
+  string author_name = 14;
+
+  // Images array of the URL of images
+  //
+  repeated string images = 15;
+
+  // CreatedAt stores the date of creation of article
+  //
+  int64 created_at = 6;
+
+  // UpdatedAt stores update date of the article
+  //
+  int64 updated_at = 7;
+
+  // DeletedAt stores the deletion date
+  //
+  int64 deleted_at = 8;
+
+  // CreatedBy stores the ID of the moderator
+  //
+  int64 created_by = 9;
+
+  // DeletedBy stores the ID of the moderator
+  //
+  int64 deleted_by = 10;
+
+  // UpdatedBy stores the ID of the moderator
+  //
+  int64 updated_by = 11;
+  // HasLikedByMe points whether user has liked article or not
+  //
+  bool has_liked_by_me = 16;
+  // HasDislikedByMe points whether user has liked article or not
+  //
+  bool has_disliked_by_me = 17;
+  // Likes count
+  //
+  int64 likes = 18;
+
+  // Dislikes count
+  //
+  int64 dislikes = 19;
+}
+
+message NewsSearchCriteria {
+  PageRequest page_request = 1; // page request
+  int64 id = 2;                 // filter by id
+  string title = 3;             // filter by title
+  string short = 4;             // filter by short description
+  string slug = 5;              // filter by slug
+  repeated Sort sorts = 6;      // sorting
+}
+

@@ -1,0 +1,50 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+/**
+* The File Storage service.
+*/
+service FileStorageService {
+
+  /**
+  * Uploads file to the storage.
+  */
+  rpc UploadFile(stream UploadFileRequest) returns (UploadFileResponse) {
+  }
+
+  /**
+  * Checks if file exist in the storage.
+  */
+  rpc IsFileExist(IsFileExistRequest) returns (IsFileExistResponse) {
+  }
+}
+
+/**
+* Describes a file.
+*/
+message FileInfo {
+  string folder = 1;
+  string filename = 2;
+  bool override = 3;
+}
+
+message UploadFileRequest {
+  oneof data {
+    FileInfo file_info = 1;
+    bytes chunk_data = 2;
+  }
+}
+
+message UploadFileResponse {
+  string file_url = 1;
+}
+
+message IsFileExistRequest {
+  string folder = 1;
+  string file_name = 2;
+}
+
+message IsFileExistResponse {
+  bool is_exist = 1;
+}

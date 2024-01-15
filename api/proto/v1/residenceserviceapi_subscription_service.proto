@@ -1,0 +1,71 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceserviceapi_builder_model.proto";
+import "common_model.proto";
+
+/**
+* The Subscribers service.
+*/
+service SubscribersService {
+
+  /**
+  * Subscribe a builder.
+  *
+  * If the builder not exists, an error "builder does not exists" will be returned.
+  */
+  rpc Subscribe(SubscribeRequest) returns (SubscribeResponse) {}
+
+  /**
+  * Unsubscribe a builder.
+  *
+  * If the builder not exists, an error "builder does not exists" will be returned.
+  */
+  rpc Unsubscribe(UnsubscribeRequest) returns (UnsubscribeResponse) {}
+
+  /**
+   * List the builders.
+   *
+   * If the builder not exists, an error "builder does not exists" will be returned.
+   */
+  rpc ListSubscribedBuilders(ListSubscribedBuildersRequest) returns (ListSubscribedBuildersResponse) {}
+
+}
+
+message SubscribeRequest {
+  // ID of the user
+  //
+  int64 user_id = 1;
+
+  // ID of the builder
+  //
+  int64 builder_id = 2;
+}
+
+message SubscribeResponse {
+}
+
+message UnsubscribeRequest {
+  int64 user_id = 1;
+  int64 builder_id = 2;
+}
+
+message UnsubscribeResponse {
+
+}
+
+message ListSubscribedBuildersRequest {
+  int64 user_id = 1;
+
+  message SearchCriteria {
+    PageRequest page = 1;
+    repeated Sort sorts = 2;
+  }
+  SearchCriteria criteria = 2;
+}
+
+message ListSubscribedBuildersResponse {
+  repeated BuilderRead builders = 1;
+  int64 total = 2;
+}

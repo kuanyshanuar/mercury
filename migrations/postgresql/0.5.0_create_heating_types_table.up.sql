@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS heating_types  (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR NOT NULL
+);

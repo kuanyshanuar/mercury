@@ -1,0 +1,1 @@
+ALTER TABLE residences_contact_details ADD COLUMN created_at BIGINT;

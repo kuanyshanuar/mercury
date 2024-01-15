@@ -1,0 +1,84 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceserviceapi_manager_model.proto";
+
+/*
+* The Manager service
+*/
+service ManagerService {
+
+  /*
+  * Create a new manager.
+  *
+  */
+  rpc CreateManager(CreateManagerRequest) returns (CreateManagerResponse) {}
+
+  /*
+  * Returns a list manager by criteria.
+  *
+  * If the manager does not exist, an error "Not found" will be returned.
+  */
+  rpc ListManagers(ListManagersRequest) returns (ListManagersResponse) {}
+
+  /*
+  * Returns a manager by id.
+  *
+  * If the manager does not exist, an error "Not found" will be returned.
+  */
+  rpc GetManager(GetManagerRequest) returns (GetManagerResponse) {}
+
+  /*
+  * Updates a manager by id.
+  *
+  * If the manager does not exist, an error "Not found" will be returned.
+  */
+  rpc UpdateManager(UpdateManagerRequest) returns (UpdateManagerResponse) {}
+
+  /*
+  * Deletes a manager by id.
+  *
+  * If the manager does not exist, an error "Not found" will be returned.
+  */
+  rpc DeleteManager(DeleteManagerRequest) returns (DeleteManagerResponse) {}
+}
+
+message CreateManagerRequest {
+  ManagerWrite manager = 1;
+}
+
+message CreateManagerResponse {
+}
+
+message ListManagersRequest {
+  ManagerSearchCriteria criteria = 1;
+}
+
+message ListManagersResponse {
+  repeated ManagerRead managers = 1;
+  int64 total = 2;
+}
+
+message GetManagerRequest {
+  int64 id = 1;
+}
+
+message GetManagerResponse {
+  ManagerRead manager = 1;
+}
+
+message UpdateManagerRequest {
+  int64 id = 1;
+  ManagerWrite manager = 2;
+}
+
+message UpdateManagerResponse {
+}
+
+message  DeleteManagerRequest {
+  int64 id = 1;
+}
+
+message DeleteManagerResponse {
+}

@@ -1,0 +1,4 @@
+CREATE TABLE IF NOT EXISTS construction_types (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR NOT NULL
+);

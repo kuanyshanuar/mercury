@@ -1,0 +1,421 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "common_model.proto";
+import "residenceserviceapi_builder_model.proto";
+
+/**
+ * Represents the residence write model.
+*/
+message ResidenceWrite {
+
+    // User id
+    int64 user_id = 1;
+
+    // Status id
+    int64 status_id = 2;
+
+    // City id
+    int64 city_id = 3;
+
+    // Housing class id
+    int64 housing_class_id = 4;
+
+    // Construction type id
+    int64 construction_type_id = 5;
+
+    // Title of residence
+    string title = 6;
+
+    // Description of residence
+    string description = 7;
+
+    // Address of residence
+    string address = 8;
+
+    // Located district
+    int64 district_id = 9;
+
+    // Latitude
+    double latitude = 10;
+
+    // Longitude
+    double longitude = 11;
+
+    // Deadline year
+    int64 deadline_year = 12;
+
+    // Deadline quarter
+    int64 deadline_quarter = 13;
+
+    // The total number of flats in the residence.
+    int64 flats_count = 14;
+
+    // The maximum amount of floors in residence.
+    int64 floors_max = 15;
+
+    // The minimum amount of rooms.
+    int64 rooms_min = 16;
+
+    // The maximum amount of rooms.
+    int64 rooms_max = 17;
+
+    // Height of ceiling
+    float ceiling_height = 18;
+
+    // Facade
+    string facade = 19 [deprecated = true];
+
+    // Has HGF
+    bool has_hgf = 20;
+
+    // Is there an elevator in the residence
+    bool has_elevator = 21 [deprecated = true];
+
+    // The minimum price per square
+    int64 price_per_square_min = 22;
+
+    // The maximum price
+    int64 price_max = 23;
+
+    // The minimum price
+    int64 price_min = 24;
+
+    // The minimum area of flats
+    float area_min = 25;
+
+    // The maximum area of flats
+    float area_max = 26;
+
+    // Title image of
+    string title_image = 27;
+
+    // Images
+    repeated string images = 28;
+
+    // Parking type
+    repeated int64 parking_type_ids = 29;
+
+    // Interior decoration
+    repeated int64 interior_decoration_ids = 30;
+
+    // Heating types
+    repeated int64 heating_type_ids = 31;
+
+    // Elevator types
+    repeated int64 elevator_types_ids = 32;
+
+    // Flat plans
+    repeated ResidenceFlatPlanWrite flat_plans = 33;
+
+    // Purchase methods
+    repeated int64 purchase_method_ids = 34;
+
+    // Slug
+    string slug = 35;
+
+    // Sale status id
+    int64 sale_status_id = 36;
+}
+
+/**
+ * Represents the residence read model.
+*/
+message ResidenceRead {
+    // Id
+    int64 id = 1;
+
+    // User id
+    int64 user_id = 2;
+
+    // Status id
+    int64 status_id = 3;
+
+    // Status
+    StatusRead status = 4;
+
+    // City id
+    int64 city_id = 5;
+
+    // City
+    City city = 44;
+
+    // Housing class id.
+    int64 housing_class_id = 6;
+
+    // Housing class
+    HouseClassRead housing_class = 7;
+
+    // Construction type id
+    int64 construction_type_id = 8;
+
+    // Construction type
+    ConstructionTypeRead construction_type = 9;
+
+    // Title of the residence
+    string title = 10;
+
+    // Description of residence
+    string description = 11;
+
+    // Address of the residence
+    string address = 12;
+
+    // District
+    DistrictRead district = 13;
+
+    // Latitude
+    double latitude = 14;
+
+    // Longitude
+    double longitude = 15;
+
+    // Deadline year
+    int64 deadline_year = 16;
+
+    // Deadline quarter
+    int64 deadline_quarter = 17;
+
+    // The total number of flats in the residence
+    int64 flats_count = 18;
+
+    // The maximum amount of floors in residence.
+    int64 floors_max = 19;
+
+    // The minimum amount of rooms.
+    int64 rooms_min = 20;
+
+    // The maximum amount of rooms.
+    int64 rooms_max = 21;
+
+    // Height of ceiling
+    float ceiling_height = 22;
+
+    // Facade
+    string facade = 23 [deprecated = true];
+
+    // Has HGF
+    bool has_hgf = 24;
+
+    // Is there an elevator in the residence
+    bool has_elevator = 25 [deprecated = true];
+
+    // The minimum price per square
+    int64 price_per_square_min = 26;
+
+    // The minimum price
+    int64 price_min = 27;
+
+    // The maximum price
+    int64 price_max = 28;
+
+    // The minimum area of flats
+    float area_min = 29;
+
+    // The maximum area of flats
+    float area_max = 30;
+
+    //  Title image of the residence
+    string title_image = 31;
+
+    // Images of
+    repeated string images = 32;
+
+    // Number of views
+    int64 views = 33;
+
+    // Number of likes
+    int64 likes = 34;
+
+    // flat plans
+    repeated ResidenceFlatPlanRead flat_plans = 35;
+
+    // parking types
+    repeated ParkingTypeRead parking_types = 36;
+
+    // Interior decoration
+    repeated InteriorDecorationRead interior_decorations = 37;
+
+    // Heating types
+    repeated HeatingTypeRead heating_types = 38;
+
+    // Elevator types
+    repeated ElevatorTypeRead elevator_types= 39;
+
+    // Purchase methods
+    repeated PurchaseMethodRead purchase_methods = 45;
+
+    // Builder
+    BuilderRead builder = 43;
+
+    // Is favourite flag
+    bool is_favourite = 46;
+
+    // Created time
+    int64 created_at = 40;
+
+    //Update time
+    int64 updated_at = 41;
+
+    // Deleted time
+    int64 deleted_at = 42;
+
+    // Sale status id
+    int64 sale_status_id = 47;
+
+    // SaleStatus
+    SaleStatusRead sale_status = 48;
+
+}
+
+
+
+/**
+ * Represents the residence flat plan write model.
+*/
+message ResidenceFlatPlanWrite {
+
+    // Residence id
+    int64 residence_id = 1;
+
+    // Number of rooms
+    int32 number_of_rooms = 2;
+
+    // Area
+    float area = 3;
+
+    // Price
+    int32 price = 4;
+
+    // Images
+    repeated string images = 5;
+}
+
+/**
+ * Represents the residence flat plan read model.
+*/
+message ResidenceFlatPlanRead {
+
+    // ID
+    //
+    int64 id = 1;
+
+    // Residnece id
+    int64 residence_id = 2;
+
+    // Number of rooms
+    int32 number_of_rooms = 3;
+
+    // Area
+    float area = 4;
+
+    // Price
+    int32 price = 5;
+
+    // Images
+    repeated string images = 6;
+
+    // Created time
+    int64 created_at = 7;
+
+    // Updated time
+    int64 updated_at = 8;
+
+    // Deleted time
+    int64 deleted_at = 9;
+}
+
+
+
+
+/**
+ * Represents the residence search criteria model.
+*/
+message ResidencesSearchCriteria {
+    // PageRequest
+    PageRequest page_request = 1;
+
+    // Sorting
+    repeated Sort sorts = 2;
+
+    // Filter by title
+    string title = 3;
+
+    // Builder IDs
+    repeated int64 builder_ids = 4;
+
+    // Filter by city id
+    int64 city_id = 5;
+
+    // Filter by district id
+    int64 district_id = 6;
+
+    // Filter by status id
+    int64 status_id = 7;
+
+    // Filter by min room
+    int64 rooms_min = 8;
+
+    // Filter by max room
+    int64 rooms_max = 9;
+
+    // Filter by minimum ceiling height
+    float ceiling_height_min = 10;
+
+    // Filter by maximum ceiling height
+    float ceiling_height_max = 11;
+
+    // Filter by price_min
+    bool has_hgf = 12;
+
+    // Filter by area_min
+    float area_min = 13;
+
+    // Filter by area_max
+    float area_max = 14;
+
+    // Filter by minimum price
+    int64 price_min = 15;
+
+    // Filter by maximum price
+    int64 price_max = 16;
+
+    // Filter construction types
+    repeated int64 construction_type_ids = 17;
+
+    // Filter parking types
+    repeated int64 parking_type_ids = 18;
+
+    // Filter interior decoration types
+    repeated int64 interior_decoration_ids = 19;
+
+    // Filter by heating types
+    repeated int64 heating_types_ids = 20;
+
+    // Filter by purchase types
+    repeated int64 purchase_methods_ids = 21;
+
+    // Filter by elevator types
+    repeated int64 elevator_types_ids = 22;
+
+    // Filter by housing class id
+    int64 housing_class_id = 23;
+
+    // Filter by minimum floors
+    int64 floors_min = 24;
+
+    // Filter by maximum floors
+    int64 floors_max = 25;
+
+    // User id for is_favourite flag
+    int64 user_id = 26;
+}
+
+///**
+// * Represents the answer event model.
+//*/
+//message AnswerEvent {
+//    AnswerEventType event_type = 1;
+//    Answer data = 2;
+//}

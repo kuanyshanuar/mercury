@@ -1,0 +1,100 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceserviceapi_builder_model.proto";
+
+/*
+* The Builder service
+*/
+service BuilderService {
+
+    /*
+    * Create a new builder.
+    *
+    */
+    rpc CreateBuilder(CreateBuilderRequest) returns (CreateBuilderResponse) {} 
+    
+    /*
+    * Returns a list builder by criteria.
+    *
+    * If the builder does not exist, an error "Not found" will be returned.
+    */
+    rpc ListBuilders(ListBuildersRequest) returns (ListBuildersResponse) {}
+
+    /*
+    * Returns a builder by id.
+    *
+    * If the builder does not exist, an error "Not found" will be returned.
+    */
+    rpc GetBuilder(GetBuilderRequest) returns (GetBuilderResponse) {}
+
+    /*
+    * Updates a builder by id.
+    *
+    * If the builder does not exist, an error "Not found" will be returned.
+    */
+    rpc UpdateBuilder(UpdateBuilderRequest) returns (UpdateBuilderResponse) {}
+
+    /*
+    * Deletes a builder by id.
+    *
+    * If the builder does not exist, an error "Not found" will be returned.
+    */
+    rpc DeleteBuilder(DeleteBuilderRequest) returns (DeleteBuilderResponse) {}
+
+    /*
+    * List popular builders
+    *
+    */
+    rpc ListPopularBuilders(ListPopularBuildersRequest) returns (ListPopularBuildersResponse) {}
+}
+
+message CreateBuilderRequest {
+    BuilderWrite builder = 1;
+}
+
+message CreateBuilderResponse {
+    int64 id = 1;
+}
+
+message ListBuildersRequest {
+    BuilderSearchCriteria criteria = 1;
+}
+
+message ListBuildersResponse {
+    repeated BuilderRead builders = 1;
+    int64 total = 2;
+}
+
+message GetBuilderRequest {
+    int64 id = 1;
+}
+
+message GetBuilderResponse {
+    BuilderRead builder = 1;
+}
+
+message UpdateBuilderRequest {
+    int64 id = 1;
+    BuilderWrite builder = 2;
+}
+
+message UpdateBuilderResponse {
+}
+
+message  DeleteBuilderRequest {
+    int64 id = 1;
+}
+
+message DeleteBuilderResponse {
+}
+
+message ListPopularBuildersRequest{
+    BuilderSearchCriteria criteria = 1;
+}
+
+message ListPopularBuildersResponse {
+    repeated BuilderRead builders = 1;
+    int64 total = 2;
+}

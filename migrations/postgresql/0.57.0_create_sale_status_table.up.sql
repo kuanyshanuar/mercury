@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS sale_statuses (
+        id BIGSERIAL NOT NULL PRIMARY KEY,
+        name VARCHAR NOT NULL
+);
+

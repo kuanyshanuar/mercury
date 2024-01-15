@@ -1,0 +1,1 @@
+ALTER TABLE residences_bookmarks DROP COLUMN IF EXISTS id;

@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS districts (
+    id      BIGSERIAL NOT NULL PRIMARY KEY,
+    city_id BIGINT NOT NULL REFERENCES cities(id),
+    name    VARCHAR NOT NULL
+);

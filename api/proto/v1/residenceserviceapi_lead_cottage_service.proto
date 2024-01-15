@@ -1,0 +1,58 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+import "residenceserviceapi_lead_cottage_model.proto";
+
+service LeadCottageService {
+
+  rpc CreateLeadCottage(createLeadCottageRequest) returns (createLeadCottageResponse);
+
+  rpc UpdateLeadCottage(updateLeadCottageRequest) returns(updateLeadCottageResponse);
+
+  rpc GetLeadCottage(getLeadCottageRequest) returns (getLeadCottageResponse);
+
+  rpc ListLeadCottages(listLeadCottagesRequest) returns (listLeadCottagesResponse);
+
+  rpc DeleteLeadCottage(deleteLeadCottageRequest) returns (deleteLeadCottageResponse);
+
+}
+
+message createLeadCottageRequest{
+  LeadCottageWrite lead_cottage = 1;
+}
+
+message createLeadCottageResponse{
+  int64 lead_id = 1;
+}
+
+message updateLeadCottageRequest{
+  int64 lead_id = 1;
+  LeadCottageWrite lead_cottage = 2;
+}
+
+message updateLeadCottageResponse{
+}
+
+message getLeadCottageRequest{
+    int64 lead_id = 1;
+}
+
+message getLeadCottageResponse{
+    LeadCottageRead lead_cottage = 1;
+}
+
+message listLeadCottagesRequest{
+  LeadCottageSearchCriteria criteria = 1;
+}
+
+message listLeadCottagesResponse{
+  repeated LeadCottageRead lead_cottages = 1;
+  int64 total = 2;
+}
+
+message deleteLeadCottageRequest{
+  int64 lead_id = 1;
+}
+
+message deleteLeadCottageResponse{
+}

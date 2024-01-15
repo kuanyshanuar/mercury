@@ -1,0 +1,24 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "common_model.proto";
+/*
+  Represents the User favourite cottages model
+ */
+message UserCottages {
+  int64 user_id = 1;
+  int64 cottage_id = 2;
+  int64 created_at = 3;
+}
+
+/**
+ * Represents the favourite cottage search criteria model.
+*/
+message FavouriteCottageSearchCriteria {
+  // PageRequest
+  PageRequest page_request = 1;
+
+  // Sorting
+  repeated Sort sorts = 2;
+}

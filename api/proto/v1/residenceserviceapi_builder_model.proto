@@ -1,0 +1,110 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "common_model.proto";
+
+message BuilderWrite {
+
+    // First name
+    //
+    string first_name = 1;
+
+    // Last name
+    //
+    string last_name = 2;
+
+    // Email
+    //
+    string email = 3;
+
+    // City
+    //
+    string city = 4;
+
+    // Phone
+    //
+    string phone = 5;
+
+    // Consultation phone number
+    //
+    string consultation_phone_number = 6;
+
+    // Image
+    //
+    string image = 7;
+
+    // Password
+    //
+    string password = 8;
+
+    // Is banned
+    //
+    bool is_banned = 9;
+}
+
+message BuilderRead {
+
+    // ID - id of the builder
+    //
+    int64 id = 1;
+
+    // First name
+    //
+    string first_name = 2;
+
+    // Last name
+    //
+    string last_name = 3;
+
+    // Email
+    //
+    string email = 4;
+
+    // City
+    //
+    string city = 5;
+
+    // Phone
+    //
+    string phone = 6;
+
+    // Consultation phone number
+    string consultation_phone_number = 7;
+
+    // Image
+    //
+    string image = 8;
+
+    // Is favourite
+    //
+    bool is_favourite = 9;
+
+    // Is banned
+    //
+    bool is_banned = 10;
+}
+
+// BuilderSearchCriteria - builder search criteria
+message BuilderSearchCriteria {
+    // PageRequest
+    //
+    PageRequest page_request = 1;
+
+    // ID of the role
+    //
+    int64 user_id = 2;
+
+    // Filter by id
+    //
+    int64 id = 3;
+
+    // Filter by name
+    string name = 4;
+
+    // Filter by email
+    string email = 5;
+
+    // Filter by phone
+    string phone = 6;
+}

@@ -1,0 +1,1 @@
+ALTER TABLE builder_leads ADD COLUMN deleted_at BIGINT;

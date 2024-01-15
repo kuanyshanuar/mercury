@@ -1,0 +1,5 @@
+CREATE TABLE IF NOT EXISTS purchase_methods  (
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR NOT NULL,
+    is_active BOOLEAN
+);

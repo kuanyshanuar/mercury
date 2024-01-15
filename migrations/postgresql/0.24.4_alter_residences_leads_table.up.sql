@@ -1,0 +1,1 @@
+ALTER TABLE residence_leads ADD COLUMN IF NOT EXISTS deleted_at BIGINT;

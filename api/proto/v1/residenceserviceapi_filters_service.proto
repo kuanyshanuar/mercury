@@ -1,0 +1,187 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceserviceapi_filters_model.proto";
+import "common_model.proto";
+
+/**
+* The Residence Filter service.
+*/
+service ResidenceFilterService {
+
+    /**
+    * Creates a new city.
+    */
+    rpc CreateCity(CreateCityRequest) returns (CreateCityResponse) {}
+
+    /**
+    * Returns a list cities.
+    */
+    rpc ListCities(ListCitiesRequest) returns (ListCitiesResponse) {}
+
+    /**
+    * Updates the city by id.
+    */
+    rpc UpdateCity(UpdateCityRequest) returns (UpdateCityResponse) {}
+
+    /**
+    * Deletes the city by id.
+    */
+    rpc DeleteCity(DeleteCityRequest) returns (DeleteCityResponse) {}
+
+    /**
+    * Creates a new district.
+    */
+    rpc CreateDistrict(CreateDistrictRequest) returns (CreateDistrictResponse) {}
+
+    /**
+    * Returns a list district by city id.
+    *
+    * If the city does not exist, an error "Not found" will be returned.
+    */
+    rpc ListDistricts(ListDistrictsRequest) returns (ListDistrictsResponse) {}
+
+    /**
+    * Updates a new district.
+    */
+    rpc UpdateDistrict(UpdateDistrictRequest) returns (UpdateDistrictResponse) {}
+
+    /**
+    * Deletes a new district.
+    */
+    rpc DeleteDistrict(DeleteDistrictRequest) returns (DeleteDistrictResponse) {}
+
+    /**
+    * Returns a list filters.
+    */
+    rpc ListFilters(ListFiltersRequest) returns (ListFiltersResponse) {}
+
+    /**
+    * Returns a list filters.
+    */
+    rpc ListFiltersV2(ListFiltersRequestV2) returns (ListFiltersResponseV2) {}
+
+    /**
+    * Returns a list of builders.
+    */
+    rpc ListFilterBuilders(ListFilterBuildersRequest) returns (ListFilterBuildersResponse) {}
+
+    /**
+    * Creates a filter.
+    */
+    rpc CreateFilter(CreateFilterRequest) returns (CreateFilterResponse) {}
+
+    /**
+    * Deletes the filter by the provided keys.
+    */
+    rpc DeleteFilter(DeleteFilterRequest) returns (DeleteFilterResponse) {}
+}
+
+message CreateCityRequest {
+    City city = 1;
+}
+
+message CreateCityResponse {
+    int64 id = 1;
+}
+
+message UpdateCityRequest {
+    int64 id = 1;
+    City city = 2;
+}
+
+message UpdateCityResponse {
+
+}
+
+message DeleteCityRequest {
+    int64 id = 1;
+}
+
+message DeleteCityResponse {
+
+}
+
+message ListCitiesRequest {
+    CitySearchCriteria criteria = 1;
+}
+
+message ListCitiesResponse {
+    repeated City cities = 1;
+    int64 total = 2;
+}
+
+message CreateDistrictRequest {
+    DistrictWrite district = 1;
+}
+
+message CreateDistrictResponse {
+    int64 id = 1;
+}
+
+message ListDistrictsRequest {
+    DistrictSearchCriteria criteria = 1;
+}
+
+message ListDistrictsResponse {
+    repeated DistrictRead districts = 1;
+    int64 total = 2;
+}
+
+message UpdateDistrictRequest {
+    int64 district_id = 1;
+    DistrictWrite district = 2;
+}
+
+message UpdateDistrictResponse {
+
+}
+
+message DeleteDistrictRequest {
+    int64 district_id = 1;
+}
+
+message DeleteDistrictResponse {
+}
+
+message ListFiltersRequest {
+
+}
+
+message ListFiltersResponse {
+    map<string, Filters> filters = 1;
+}
+
+message ListFiltersRequestV2 {
+
+}
+
+message ListFiltersResponseV2 {
+    repeated FiltersV2 filters = 1;
+}
+
+message ListFilterBuildersRequest {
+    int64 city_id = 1;
+}
+
+message ListFilterBuildersResponse {
+    repeated FilterBuilder builders = 1;
+}
+
+message CreateFilterRequest {
+    string key = 1;
+    Filter filter = 2;
+}
+
+message CreateFilterResponse {
+    Filter filter = 1;
+}
+
+message DeleteFilterRequest {
+    int64 id = 1;
+    string key = 2;
+}
+
+message DeleteFilterResponse {
+}

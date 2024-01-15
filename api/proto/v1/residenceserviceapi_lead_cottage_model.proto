@@ -1,0 +1,33 @@
+  syntax = "proto3";
+  package gitlab.com.mercury.residenceservice.generated.model.v1;
+  option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+  import "common_model.proto";
+
+  message LeadCottageRead{
+    int64 id = 1;
+    int64 cottage_id = 2;
+    string cottage_name = 3;
+    int64 status_id = 4;
+    LeadStatus status = 5;
+    int64 date_start = 6;
+    int64 date_end = 7;
+  }
+
+  message LeadCottageWrite{
+    int64 cottage_id = 2;
+    int64 status_id = 3;
+    int64 issue_date = 4;
+    int64 expire_date = 5;
+  }
+
+  message LeadCottageSearchCriteria {
+    // PageRequest
+    PageRequest page_request = 1;
+
+    // Filter by status
+    int64 status_id = 2;
+
+    // Filter by name
+    string name = 3;
+  }

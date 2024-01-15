@@ -1,0 +1,70 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceserviceapi_lead_builder_model.proto";
+
+/**
+* The Lead residences service.
+*/
+service LeadBuildersService {
+
+  /**
+  * Creates a new lead residence.
+  *
+  * If the residence exists, an error "Already exists" will be returned.
+  */
+  rpc CreateLeadBuilder(CreateLeadBuilderRequest) returns(CreateLeadBuilderResponse) {}
+
+  /**
+  * Returns a list residence by criteria.
+  *
+  * If the residence does not exist, an error "Not found" will be returned.
+  */
+  rpc ListLeadBuilders(ListLeadBuildersRequest) returns (ListLeadBuildersResponse) {}
+
+  /**
+  * Updates the residence by id.
+  *
+  * If the residence does not exist, an error "Not found" will be returned.
+  */
+  rpc UpdateLeadBuilder(UpdateLeadBuilderRequest) returns(UpdateLeadBuilderResponse) {}
+
+  /**
+  * Deletes the residence by id.
+  *
+  * If the residence does not exist, an error "Not found" will be returned.
+  */
+  rpc DeleteLeadBuilder(DeleteLeadBuilderRequest) returns(DeleteLeadBuilderResponse) {}
+}
+
+message CreateLeadBuilderRequest {
+  LeadBuilderWrite lead = 1;
+}
+
+message CreateLeadBuilderResponse {
+}
+
+message ListLeadBuildersRequest {
+  LeadBuilderSearchCriteria criteria = 1;
+}
+
+message ListLeadBuildersResponse {
+  repeated LeadBuilderRead leads = 1;
+  int64 total = 2;
+}
+
+message UpdateLeadBuilderRequest{
+  int64 lead_id = 1;
+  LeadBuilderWrite lead = 2;
+}
+
+message UpdateLeadBuilderResponse {
+}
+
+message DeleteLeadBuilderRequest {
+  int64 lead_id = 1;
+}
+
+message DeleteLeadBuilderResponse {
+}

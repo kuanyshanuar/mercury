@@ -1,0 +1,3 @@
+ALTER TABLE residences_contact_details ADD COLUMN is_delivered BOOLEAN NOT NULL DEFAULT FALSE;
+
+ALTER TABLE residences_contact_details DROP CONSTRAINT residences_contact_details_residence_id_fkey;

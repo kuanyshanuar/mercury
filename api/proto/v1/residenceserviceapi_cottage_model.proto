@@ -1,0 +1,471 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "common_model.proto";
+import "residenceserviceapi_builder_model.proto";
+
+message CottageWrite{
+  // CityID of the city of the location of the cottage
+  //
+  int64 city_id = 1;
+  // User id
+  //
+  int64 user_id  = 2;
+  // StatusID - id of the cottage status
+  //
+  int64 status_id = 3;
+  // District id
+  //
+  int64 district_id = 4;
+  // HousingClassID - id of the house class
+  //
+  int64 housing_class_id = 5;
+
+  // Title is a title of the cottage
+  //
+  string title = 6;
+
+  // Description is a description of the cottage, main information
+  //
+  string description = 7;
+
+  // Address is an address of the cottage in String
+  //
+  string address =8;
+
+  // Latitude is latitude of the cottage
+  //
+  double latitude = 9;
+
+  // Longitude is longitude of the cottage
+  //
+  double longitude = 10;
+
+  // Territory is description of the territory
+  //
+  string territory = 11;
+
+  // CeilingHeightMin is a minimal ceiling height of the cottage(preferably choose among the house plans)
+  //
+  double ceiling_height_min = 12;
+  // CeilingHeightMin is a maximal ceiling height of the cottage(preferably choose among the house plans)
+  //
+  double ceiling_height_max = 13;
+
+  // BuildingArea is area of the building
+  //
+  double building_area = 14;
+
+  // AreaMin shows minimal house square of the cottage
+  //
+  double area_min   = 15;
+
+  // AreaMax shows maximal house square of the cottage
+  //
+  double area_max  =16;
+
+  // HouseAmount shows how many houses in the cottage complex
+  //
+  int64 house_amount  =17;
+
+  // FloorsCount is an id of the cottage
+  //
+  int64 floors_count  = 18;
+
+  // Facade is a description of the facade
+  //
+  string facade = 19;
+
+  // CanRePlan shows whether cottage can be constructed and planned differently
+  //
+  bool can_replan  = 20;
+
+  // RoomsMin - minimal number of rooms among the house plans
+  //
+  int64 rooms_min = 21;
+
+  // RoomsMax- maximal number of rooms among the house plans
+  //
+  int64 rooms_max = 22;
+
+  // PricePerSquareMin - preferably among the house plans of the cottage
+  //
+  double price_per_square_min  = 23;
+  // PricePerSquareMax - preferably among the house plans of the cottage
+  //
+  double price_per_square_max  = 24;
+  // ParkingTypes - available parking types
+  //
+  repeated int64 parking_types = 25;
+
+  // House plans
+  //
+  repeated HousePlanWrite house_plans = 26;
+
+  // CottageWallTypesIDs
+  //
+  repeated int64 wall_types = 27;
+
+  // ElevatorTypes
+  //
+  repeated int64 elevator_types = 28;
+
+  // WarmingTypeIDs
+  //
+  repeated int64 warming_types = 29;
+
+  // WindowTypeIDS
+  //
+  repeated int64 window_types = 30;
+
+  // InteriorDecorationIDs
+  //
+  repeated int64 interior_decorations = 31;
+
+  // PurchaseMethods - available purchase methods
+  //
+  repeated int64 purchase_methods = 32;
+
+  // HeatingTypes - available purchase methods
+  //
+  repeated int64 heating_types = 33;
+
+  // Images - introductory images of the cottage
+  //
+  repeated string images = 34;
+
+  // Sale status id
+  //
+  int64 sale_status_id = 35;
+
+}
+
+message CottageRead{
+  // ID is an id of the cottage
+  //
+  int64 id =1;
+  // CityID
+  //
+  int64 city_id  = 2;
+
+  // UserID - user id.
+  //
+  int64 user_id  = 3;
+
+  // StatusID - status of the residence.
+  //
+  int64 status_id  = 4;
+
+  // Status - represents status.
+  // only read
+  StatusRead status = 5;
+
+  // DistrictID
+  //
+  int64 district_id = 6;
+
+  // DistrictRead - result of the district read from the database
+  //
+  DistrictRead district = 7;
+
+  // HouseClassID - id of the house class belonging
+  //
+  int64 housing_class_id = 8;
+  // HousingClass - result of the read of the housing class from the database
+  //
+  HouseClassRead housing_class = 9;
+
+
+  // Title is a title of the cottage
+  //
+  string title = 10;
+
+  // Description is a description of the cottage, main information
+  //
+  string description = 11;
+
+  // Address is an address of the cottage in String
+  //
+  string address =12;
+
+  // Latitude is latitude of the cottage territory
+  //
+  double latitude = 13;
+
+  // Longitude is longitude of the cottage territory
+  //
+  double longitude = 14;
+
+  // Territory is description of the territory
+  //
+  string territory = 15;
+
+  // CeilingHeightMin is a minimal ceiling height among the house plans(preferably)
+  //
+  double ceiling_height_min = 16;
+  // CeilingHeight is a minimal ceiling height among the house plans(preferably)
+  //
+  double ceiling_height_max = 17;
+
+  // BuildingArea is area of the building
+  //
+  double building_area = 18;
+  // AreaMin - minimal area among the house plans of the cottage or overall houses
+  //
+  double area_min   = 19;
+
+  // AreaMax - maximal area among the house plans of the cottage or overall houses
+  //
+  double area_max  =20;
+
+  // HouseAmount shows how many houses in the cottage complex
+  //
+  int64 house_amount  =21;
+
+  // FloorsCount is an id of the cottage
+  //
+  int64 floors_count  = 22;
+
+  // Facade is a description of the facade
+  //
+  string facade = 23;
+
+  // CanRePlan shows whether cottage is available to change its planning
+  //
+  bool can_replan  = 24;
+
+  // RoomsMin- minimal number of rooms among the house plans
+  //
+  int64 rooms_min = 25;
+  // RoomsMax - maximal number of rooms among the house plans
+  //
+  int64 rooms_max = 26;
+
+  // PricePerSquareMin is minimal price per square among the cottage houses inside the cottage city
+  //
+  double price_per_square_min  = 27;
+  // PricePerSquareMax is maximal price per square among the cottage houses inside the cottage city
+  //
+  double price_per_square_max  = 28;
+
+
+  // Windows is a description of window types
+  //
+  repeated WindowTypeRead window_types = 29;
+
+  // CottagePlans
+  //
+  repeated HousePlanRead house_plans = 30;
+
+  // CottageWallTypesIDs
+  //
+  repeated WallTypeRead wall_types = 31;
+
+  // ElevatorTypes
+  //
+  repeated ElevatorTypeRead elevator_types = 32;
+
+  // WarmingTypeIDs
+  //
+  repeated WarmingTypeRead warming_types = 33;
+
+
+  // InteriorDecorationIDs
+  //
+  repeated InteriorDecorationRead interior_decorations = 34;
+
+  // PurchaseMethods - available purchase methods
+  //
+  repeated PurchaseMethodRead purchase_methods = 35;
+
+  // HeatingTypes - available purchase methods
+  //
+  repeated HeatingTypeRead heating_types = 36;
+
+  // ParkingTypes
+  //
+  repeated ParkingTypeRead parking_types = 37;
+  // Images - introductory images of the cottage
+  //
+  repeated string images = 38;
+  // Created timestamp
+  //
+  int64 created_at = 39;
+
+  // Updated timestamp
+  //
+  int64 updated_at = 40;
+
+  // Deleted timestamp
+  //
+  int64 deleted_at = 41;
+
+  // Builder
+  BuilderRead builder = 42;
+
+  // City
+  City city = 43;
+
+  //
+  bool is_favourite = 44;
+
+
+  // SaleStatusID - status of the residence.
+  //
+  int64 sale_status_id  = 45;
+
+  // Sale status - represents status.
+  // only read
+  SaleStatusRead sale_status = 46;
+}
+
+message CottageSearchCriteria{
+  PageRequest page = 1;
+  repeated Sort sort = 2;
+  string title = 3;                        // filter by title
+  repeated int64 builder_ids = 4;          // filter by builders
+  int64 city_id = 5;                       // filter by city id
+  int64 district_id = 6;                   // filter by district id
+  int64 rooms_min = 7;                     // filter by the amount of rooms
+  int64 rooms_max = 8;                     // filter by the amount of rooms
+  double ceiling_height_min = 9;           // filter by ceiling height
+  double  ceiling_height_max = 10;         // filter by ceiling height
+  bool has_hgf = 11;                       // filter by has_hgf
+  double area_min = 12;                    // filter by area
+  double area_max = 13;                    // filter by area
+  int64 price_min = 14;                    // filter by price
+  int64 price_max =15;                     // filter by price
+  repeated int64 interior_decoration = 16; // filter by interior decoration
+  repeated int64 heating_types = 17;       // filter by heating types
+  repeated int64 purchase_methods = 18;    // filter by purchase methods
+  repeated int64 elevator_types = 19;      // filter by elevator types
+  repeated int64 warming_types = 20;       // filter by warming types
+  repeated int64 window_types = 21;        // filter by window types
+  repeated int64 wall_types = 22;         // filter by wall types
+  repeated int64 parking_types = 23;
+  int64 floors_min = 24;                   // filter by floors
+  int64 floors_max = 25;                   // filter by floors
+  int64 user_id  = 26;                     // filter favourites
+  int64 status_id = 27;                    // filter by status
+  int64 housing_class = 28;                // filter by housing class
+  int64 house_amount = 29;                // filter by amount of houses in the cottage city
+}
+
+message HousePlanWrite{
+  // cottage_id is an id of the cottage
+  //
+  int64 cottage_id = 2;
+
+  // Title is just title information about the plan
+  //
+  string title =3 ;
+
+  // NumberOfRooms is number of rooms inside the plan
+  //
+  int64 number_of_rooms = 4;
+
+  // Area is an area of the particular plan
+  //
+  double area = 5;
+
+  // Longitude is a longitude of the cottage house
+  //
+  double longitude = 6;
+
+  // Territory is an id of the cottage
+  //
+  double territory = 7;
+
+  // CeilingHeight is the height of the ceiling of the cottage
+  //
+  double ceiling_height = 8;
+
+  // Price is a price of the cottage_plan
+  //
+  int64 price = 9;
+
+  // PricePerSquare is a price per square calculated by price/area of the cottage_plan
+  //
+  double price_per_square = 10;
+
+  // PlanImages is images of the plan(schemes)
+  //
+  repeated string plan_images = 11;
+
+  // HouseImages is images of the cottage itself
+  //
+  repeated string house_images = 12;
+
+  // Housing class id is id of the cottage's house type(elite or whatever)
+  //
+  int64 housing_class_id = 13;
+}
+
+// CottagePlanRead is for sending the data to the API service
+message HousePlanRead{
+  // ID is an id of the cottage
+  //
+  int64 id  = 1;
+
+  // CottageId is an id of the cottage
+  //
+  int64 cottage_id =2;
+
+  // Title is just title information about the plan
+  //
+  string title  =3 ;
+
+  // NumberOfRooms is number of rooms inside the plan
+  //
+  int64 number_of_rooms = 4;
+
+  // Area is an area of the particular plan
+  //
+  double area  = 5;
+
+  // Longitude is a longitude of the cottage house
+  //
+  double longitude  =6;
+
+  // Territory is an id of the cottage
+  //
+  double territory = 7;
+
+  // CeilingHeight is the height of the ceiling of the cottage
+  //
+  double ceiling_height  = 8;
+
+  // Price is a price of the cottage_plan
+  //
+  int64 price = 9;
+
+  // PricePerSquare is a price per square calculated by price/area of the cottage_plan
+  //
+  double price_per_square  = 10;
+
+  // PlanImages is images of the plan(schemes)
+  //
+  repeated string plan_images = 11;
+
+  // HouseImages is images of the cottage itself
+  //
+  repeated string house_images = 12;
+
+  // HousingClassID is id of the cottage's house Class(elite or whatever)
+  //
+  int64 housing_class_id = 13;
+
+  // CreatedAt - created time.
+  //
+  int64 created_at = 14;
+
+  // UpdatedAt - updated time.
+  //
+  int64 updated_at = 15;
+
+  // DeletedAt - deleted timestamp.
+  //
+  int64 deleted_at = 16;
+}
+

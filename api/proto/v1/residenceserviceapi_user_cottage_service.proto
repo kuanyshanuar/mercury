@@ -1,0 +1,39 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "residenceserviceapi_user_cottage_model.proto";
+
+service UserCottagesService{
+  rpc AddUserCottage(addUserCottageRequest) returns (addUserCottageResponse) {};
+  rpc DeleteUserCottage(deleteUserCottageRequest) returns(deleteUserCottageResponse) {};
+  rpc ListUserCottage(listUserCottageRequest) returns(listUserCottageResponse) {};
+}
+
+message addUserCottageRequest{
+  int64 user_id = 1;
+  int64 cottage_id = 2;
+}
+
+message addUserCottageResponse{
+
+}
+
+message deleteUserCottageRequest{
+  int64 user_id = 1;
+  int64 cottage_id = 2;
+}
+
+message deleteUserCottageResponse{
+
+}
+
+message listUserCottageRequest{
+  int64 user_id = 1;
+  FavouriteCottageSearchCriteria criteria = 2;
+}
+
+message listUserCottageResponse{
+  repeated int64 user_cottages = 1;
+  int64 total =2;
+}

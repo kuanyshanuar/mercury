@@ -1,0 +1,54 @@
+syntax = "proto3";
+package gitlab.com.mercury.residenceservice.generated.model.v1;
+option go_package = "gitlab.com.mercury/residenceserviceapi/v1";
+
+import "common_model.proto";
+
+message Filter {
+    // ID
+    //
+    int64 id = 1;
+
+    // Name
+    //
+    string name = 2;
+}
+
+message Filters {
+    // Filters
+    //
+    repeated Filter filters = 1;
+}
+
+message FiltersV2 {
+    // Key
+    //
+    string key = 1;
+
+    // Filters
+    //
+    repeated Filter filters = 2;
+}
+
+message FilterBuilder {
+    // ID
+    //
+    int64 id = 1;
+
+    // Name
+    //
+    string full_name = 2;
+}
+
+message CitySearchCriteria {
+    // PageRequest
+    PageRequest page_request = 1;
+}
+
+message DistrictSearchCriteria {
+    // PageRequest
+    PageRequest page_request = 1;
+
+    // City id
+    int64 city_id = 2;
+}

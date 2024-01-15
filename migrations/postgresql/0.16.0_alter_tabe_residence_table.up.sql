@@ -1,0 +1,1 @@
+ALTER TABLE residences DROP COLUMN IF EXISTS has_elevator;
