@@ -47,6 +47,7 @@ Run
          postgres:14.2`
 
 ## Minio
+uses Minio file storing service.
 `docker run -d --restart=on-failure:3
             -p 9000:9000 \
             -p 9090:9090 \
